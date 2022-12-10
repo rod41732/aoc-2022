@@ -1,10 +1,31 @@
 package utils
-import "os"
-import "log"
+
+import (
+	"log"
+	"os"
+	"strings"
+)
 
 func ReadFile(fileName string)string {
   var bytes, _ = os.ReadFile(fileName)
   return string(bytes)
+}
+
+func Split(text, sep string) []string {
+  if (sep == "") { panic("sep cannot be empty!")}
+  var parts = make([]string, 0)
+  for {
+    before, after, found  := strings.Cut(text, sep)
+    parts = append(parts, before)
+    if !found { break }
+    text = after
+  }
+  return parts
+}
+
+func ReadLines(fileName string)[]string {
+  var bytes, _ = os.ReadFile(fileName)
+  return Split(string(bytes), "\n")
 }
 
 func Unwrap[T any](val T, err error) T {
